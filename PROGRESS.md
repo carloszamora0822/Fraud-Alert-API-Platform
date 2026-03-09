@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 2.7 — Test Suite (40+ tests)
+- **Current Task**: 2.8 — Postman Collection
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -33,7 +33,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 | 2.4  | Query filtering                   | `feature/2.4-filtering`         | DONE        |
 | 2.5  | Rate limiting (slowapi)           | `feature/2.5-rate-limiting`     | DONE        |
 | 2.6  | Error handling (RFC 7807)         | `feature/2.6-error-handling`    | DONE        |
-| 2.7  | Test suite (40+ tests)            | `feature/2.7-test-suite`        | NOT STARTED |
+| 2.7  | Test suite (40+ tests)            | `feature/2.7-test-suite`        | DONE        |
 | 2.8  | Postman collection                | `feature/2.8-postman`           | NOT STARTED |
 
 ### Sprint 3: Analytics & DevOps
@@ -76,3 +76,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - **Next**: Start task 2.6 — Error Handling (RFC 7807)
 - Completed task 2.6: RFC 7807 error handling — custom exception classes, global handlers, consistent problem+json responses across all endpoints
 - **Next**: Start task 2.7 — Test Suite
+- Completed task 2.7: 43-test suite — conftest with savepoint rollback, tests for auth, accounts, alerts, error handling, RBAC, health. Fixed alert_id→account_id bug in accounts router.
+- **Next**: Start task 2.8 — Postman Collection
