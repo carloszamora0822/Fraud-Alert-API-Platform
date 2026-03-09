@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+
 from app.core.config import settings
+from app.routers import accounts, alerts
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -7,6 +9,9 @@ app = FastAPI(
     description="Ingest and query fraud alerts",
     debug=settings.DEBUG,
 )
+
+app.include_router(accounts.router, prefix=settings.API_V1_PREFIX)
+app.include_router(alerts.router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/health")
