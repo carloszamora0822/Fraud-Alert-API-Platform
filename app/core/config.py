@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     RATE_LIMIT_ADMIN: str = "1000/minute"
 
     # ── Azure Data Explorer (Sprint 3) ───────────────────
-    ADX_CLUSTER_URL: str = ""
+    ADX_CLUSTER_URI: str = ""
     ADX_DATABASE: str = ""
 
     model_config = SettingsConfigDict(
