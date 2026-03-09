@@ -321,3 +321,34 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 **Highlights**:
 - Honest about his learning edge — said "conceptually I get it, in practice I struggle to read the code" — this kind of self-assessment is rare and valuable for growth
 - Asked for a data flow diagram rather than just accepting the explanation — shows he's optimizing for real understanding, not just moving forward
+
+---
+
+## Task 2.3 — Cursor-Based Pagination
+
+**What I built**: Cursor-based pagination for the alerts endpoint — generic `PaginatedResponse` schema, base64 cursor encoding, `limit+1` detection trick, and tuple-based tiebreaker sorting.
+
+**What I learned**:
+- The difference between offset-based ("page 4 of 60") and cursor-based ("everything after this bookmark") pagination, and why cursor-based is better for constantly-changing data
+- How cursors work mechanically: encode the last item's (timestamp, id) as a base64 token, use `WHERE (timestamp, id) < (cursor)` to jump directly to the right spot
+- The `limit+1` trick: fetch one extra row to determine `has_more` without running a separate COUNT query
+- Why tiebreakers matter: two alerts with the same timestamp need a second sort key (id) to avoid ambiguity
+- Python generics (`TypeVar` + `Generic[T]`) to build reusable response wrappers
+
+**Unprompted questions**:
+- Asked about using cursors for range queries ("can I do 18:49 to 20:33?") — correctly intuited the distinction between pagination and filtering before being taught it
+- Asked "how does this work in practice as a client?" — thinking about API usability, not just implementation
+
+**Concept confidence**:
+
+| Concept | Confidence |
+|---------|------------|
+| Offset vs cursor pagination tradeoffs | Strong |
+| Cursor encode/decode mechanism | Strong |
+| limit+1 has_more trick | Strong |
+| Python generics (TypeVar) | Conceptual |
+| SQLAlchemy tuple_ comparisons | Conceptual |
+
+**Highlights**:
+- Demonstrated strong product thinking — didn't just ask "how do I build it" but "how would a client actually use this and why is it better?" That's the kind of user-empathy that separates good engineers from great ones
+- Connected the concept to real-world UIs he's used (log viewers, infinite scroll) before being prompted — shows he's building mental models, not just memorizing patterns
