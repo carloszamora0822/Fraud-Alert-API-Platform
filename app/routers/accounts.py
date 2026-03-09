@@ -42,12 +42,12 @@ async def list_accounts(
 @limiter.limit(get_role_limit)
 async def get_account(
     request: Request,
-    alert_id: uuid.UUID,
+    account_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     _user: User = Depends(require_role("analyst")),
 ):
     """Get a single account by ID. Requires analyst role."""
-    account = await account_service.get_account(db, alert_id)
+    account = await account_service.get_account(db, account_id)
     if account is None:
-        raise NotFoundError("Account", alert_id)
+        raise NotFoundError("Account", account_id)
     return account
