@@ -1,20 +1,24 @@
+from __future__ import annotations
+
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, ForeignKey, Index, String, Text, func
+from sqlalchemy import DateTime, ForeignKey, Index, String, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
+
+if TYPE_CHECKING:
+    from app.models.account import Account
 
 
 class Alert(Base):
     __tablename__ = "alerts"
 
     # ── Core fields ───────────────────────────────────────
-    alert_id: Mapped[str] = mapped_column(
-        String(100), unique=True, nullable=False
-    )
+    alert_id: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -40,7 +44,7 @@ class Alert(Base):
     )
 
     # Relationship — gives us alert.account to get the parent account.
-    account: Mapped["Account"] = relationship(back_populates="alerts")
+    account: Mapped["Account"] = relationship(back_populates="alerts")  # noqa: F821
 
     # ── Indexes for fast queries ──────────────────────────
     __table_args__ = (

@@ -198,8 +198,6 @@ def generate_alert(account_id: uuid.UUID) -> AlertCreate:
     )
 
 
-def generate_alerts(
-    account_ids: list[uuid.UUID], n: int = 10_000
-) -> list[AlertCreate]:
+def generate_alerts(account_ids: list[uuid.UUID], n: int = 10_000) -> list[AlertCreate]:
     """Generate N alerts spread randomly across the given accounts."""
     return [generate_alert(random.choice(account_ids)) for _ in range(n)]
