@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 2.1 — JWT Auth
+- **Current Task**: 2.2 — Role-Based Access Control
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -27,7 +27,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 
 | ID   | Task                              | Branch                          | Status      |
 |------|-----------------------------------|---------------------------------|-------------|
-| 2.1  | JWT auth (token creation)         | `feature/2.1-jwt-auth`          | NOT STARTED |
+| 2.1  | JWT auth (token creation)         | `feature/2.1-jwt-auth`          | DONE        |
 | 2.2  | Role-based access control         | `feature/2.2-rbac`              | NOT STARTED |
 | 2.3  | Cursor-based pagination           | `feature/2.3-pagination`        | NOT STARTED |
 | 2.4  | Query filtering                   | `feature/2.4-filtering`         | NOT STARTED |
@@ -64,3 +64,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - Completed task 1.7: Faker-based data generator (scripts/generate.py) + seed script (scripts/seed.py) — 20 accounts, 10K alerts, 6 fraud types + legitimate traffic
 - Completed task 1.8: Makefile (9 targets), pre-commit hooks (black + ruff), fixed mypy type errors
 - **Sprint 1 COMPLETE** — Next: Start Sprint 2, task 2.1 — JWT Auth
+
+### Session 2 — 2026-03-09
+- Completed task 2.1: JWT auth — User model, bcrypt password hashing, register/login endpoints, get_current_user dependency, Alembic migration
+- **Next**: Start task 2.2 — Role-Based Access Control

@@ -256,3 +256,39 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Proactively asked how Makefiles connect to CI/CD pipelines — systems thinking about how tools compose across environments
 - Correctly intuited that pipeline YAML would call Makefile targets — understood DRY principle applied to DevOps
 - Sprint 1 complete: 8 tasks, full API from scaffold to dev tooling
+
+---
+
+## Task 2.1 — JWT Authentication
+
+**What I built**: Full JWT auth system — User model with bcrypt password hashing, register and login endpoints, a `get_current_user` dependency that decodes and validates tokens on protected routes, and an Alembic migration for the `users` table.
+
+**What I learned**:
+- The complete JWT workflow: register (hash + store) → login (verify + issue token) → protected request (decode + validate)
+- How bcrypt works: one-way hashing with a random salt embedded in the output. Same password + same salt = same hash, but the salt is only generated once at registration
+- Why salts exist: they defeat rainbow table attacks by making identical passwords produce different hashes per user
+- JWT structure: header.payload.signature — the payload is readable by anyone (base64), but the signature prevents tampering
+- The difference between hashing (one-way, irreversible) and encryption (two-way, reversible) — passwords use hashing because you never need the original back
+- How `OAuth2PasswordBearer` works as a FastAPI helper that extracts tokens from the Authorization header
+- Short-lived tokens as a security boundary — 30 min expiry limits damage if a token is stolen
+
+**Questions I asked** (unprompted):
+- "The salt... it doesn't make sense how I can have the same password but different results" → Pushed until he understood that the salt is stored inside the hash and reused on login
+- "Couldn't they just find the password in that message?" → Led to understanding one-way hashing — you can't reverse a hash, the salt isn't a decryption key
+- "Does salt provide instructions on how to decrypt?" → Refined understanding: salt changes the hashing recipe (like a spice), it doesn't enable decryption
+- "When we relogin, how do we know whether that is right or wrong compared to the stored hash?" → Traced the full verify flow: extract salt from stored hash → re-hash input with same salt → compare
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| JWT workflow (register → login → validate) | Solid |
+| Bcrypt hashing + salt | Solid |
+| One-way hashing vs encryption | Solid |
+| Rainbow table attacks + salt defense | Solid |
+| FastAPI dependency for auth | Solid |
+| Token expiry as security measure | Solid |
+
+**Highlights**:
+- Didn't accept "bcrypt uses a salt" at face value — asked 4 follow-up questions until the full mechanism clicked
+- Distinguished between hashing and encryption unprompted — asked "couldn't they find the password in the hash?" which shows he was testing his own assumptions
+- Asked about the security approach holistically ("which is of most security?") before diving into implementation — security-first thinking
