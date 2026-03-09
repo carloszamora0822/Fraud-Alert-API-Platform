@@ -25,7 +25,7 @@ Every Claude Code session MUST:
 5. Implement in small steps — one concept per step, explain as you go
 6. Run tests/linting after each meaningful change
 7. **Pre-commit review**: walk Carlos through all changes, explain architecture impact. Only commit after he confirms understanding.
-8. Commit with descriptive message
+8. Commit with descriptive message. **NEVER** include `Co-Authored-By` lines in commits.
 9. Update `PROGRESS.md`
 10. Merge to main: `git checkout main && git merge feature/<task-id>-<name>`
 

@@ -1,0 +1,339 @@
+{
+  "info": {
+    "name": "Fraud Alert API",
+    "description": "Complete API collection for the Fraud Alert API & Data Platform.\n\n## Setup\n1. Run \"Register\" to create a user\n2. Run \"Login\" — the token is auto-saved to {{token}}\n3. All other requests use the token automatically\n\n## Variables\n- `base_url`: defaults to http://localhost:8000\n- `token`: auto-set by Login request",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "account_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "alert_uuid",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Returns API health status. No authentication required."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"securepass123\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register"]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Register a new user. Roles: analyst, admin, superadmin."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('token', json.access_token);",
+                  "    console.log('Token saved to {{token}}');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Login and receive a JWT token. The token is automatically saved to the collection variable {{token}} via a post-response script."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "Create Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('account_id', json.id);",
+                  "    console.log('Account ID saved: ' + json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_name\": \"Acme Corp\",\n  \"environment\": \"production\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "accounts", ""]
+            },
+            "description": "Create a new account. Requires admin role. The account ID is auto-saved to {{account_id}}."
+          }
+        },
+        {
+          "name": "List Accounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "accounts", ""]
+            },
+            "description": "List all accounts. Requires analyst role or above."
+          }
+        },
+        {
+          "name": "Get Account by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts/{{account_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "accounts", "{{account_id}}"]
+            },
+            "description": "Get a single account by UUID. Uses {{account_id}} from Create Account."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts",
+      "item": [
+        {
+          "name": "Create Alert",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('alert_uuid', json.id);",
+                  "    console.log('Alert UUID saved: ' + json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"alert_id\": \"ALERT-2026-001\",\n  \"severity\": \"high\",\n  \"event_type\": \"impossible_travel\",\n  \"resource_type\": \"user_session\",\n  \"source_ip\": \"203.0.113.42\",\n  \"geo_location\": \"Tokyo, JP\",\n  \"raw_payload\": {\n    \"previous_location\": \"New York, US\",\n    \"time_delta_minutes\": 30\n  },\n  \"account_id\": \"{{account_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/alerts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "alerts", ""]
+            },
+            "description": "Create a new fraud alert. Requires admin role. The alert UUID is auto-saved to {{alert_uuid}}."
+          }
+        },
+        {
+          "name": "List Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/alerts/?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "alerts", ""],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of results (1-100, default 50)"
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "Pagination cursor from previous response",
+                  "disabled": true
+                },
+                {
+                  "key": "severity",
+                  "value": "high",
+                  "description": "Filter: low, medium, high, critical",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "new",
+                  "description": "Filter: new, reviewed, escalated, resolved",
+                  "disabled": true
+                },
+                {
+                  "key": "event_type",
+                  "value": "impossible_travel",
+                  "description": "Filter by event type string",
+                  "disabled": true
+                },
+                {
+                  "key": "account_id",
+                  "value": "{{account_id}}",
+                  "description": "Filter by account UUID",
+                  "disabled": true
+                },
+                {
+                  "key": "start_date",
+                  "value": "2026-01-01T00:00:00Z",
+                  "description": "Filter: alerts after this datetime",
+                  "disabled": true
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-12-31T23:59:59Z",
+                  "description": "Filter: alerts before this datetime",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List alerts with cursor-based pagination and optional filters. Disabled query params are pre-filled examples — enable them to use."
+          }
+        },
+        {
+          "name": "Get Alert by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/alerts/{{alert_uuid}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "alerts", "{{alert_uuid}}"]
+            },
+            "description": "Get a single alert by UUID. Uses {{alert_uuid}} from Create Alert."
+          }
+        },
+        {
+          "name": "Update Alert Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"escalated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/alerts/{{alert_uuid}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "alerts", "{{alert_uuid}}", "status"]
+            },
+            "description": "Update an alert's status. Requires admin role. Options: new, reviewed, escalated, resolved."
+          }
+        }
+      ]
+    }
+  ]
+}
