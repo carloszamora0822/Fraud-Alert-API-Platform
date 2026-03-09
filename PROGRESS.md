@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 2.6 — Error Handling (RFC 7807)
+- **Current Task**: 2.7 — Test Suite (40+ tests)
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -32,7 +32,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 | 2.3  | Cursor-based pagination           | `feature/2.3-pagination`        | DONE        |
 | 2.4  | Query filtering                   | `feature/2.4-filtering`         | DONE        |
 | 2.5  | Rate limiting (slowapi)           | `feature/2.5-rate-limiting`     | DONE        |
-| 2.6  | Error handling (RFC 7807)         | `feature/2.6-error-handling`    | NOT STARTED |
+| 2.6  | Error handling (RFC 7807)         | `feature/2.6-error-handling`    | DONE        |
 | 2.7  | Test suite (40+ tests)            | `feature/2.7-test-suite`        | NOT STARTED |
 | 2.8  | Postman collection                | `feature/2.8-postman`           | NOT STARTED |
 
@@ -74,3 +74,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - **Next**: Start task 2.5 — Rate Limiting
 - Completed task 2.5: Role-based rate limiting with slowapi — 100/min analyst, 1000/min admin, 20/min auth endpoints, in-memory storage
 - **Next**: Start task 2.6 — Error Handling (RFC 7807)
+- Completed task 2.6: RFC 7807 error handling — custom exception classes, global handlers, consistent problem+json responses across all endpoints
+- **Next**: Start task 2.7 — Test Suite

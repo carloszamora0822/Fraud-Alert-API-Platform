@@ -410,3 +410,29 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 **Highlights**:
 - Strong security instinct — immediately questioned where counters live and whether clients could tamper with them
 - Connected the task to real-world infrastructure (API gateways) without prompting — shows growing architectural awareness
+
+---
+
+## Task 2.6 — Error Handling (RFC 7807)
+
+**What I built**: Standardized error handling across the entire API using the RFC 7807 Problem Details spec. Created a custom exception hierarchy (`ProblemDetailError` → `NotFoundError`, `ConflictError`, `AuthenticationError`, `ForbiddenError`), global exception handlers, and migrated all existing endpoints away from raw `HTTPException` raises.
+
+**What I learned**:
+- RFC 7807 is an industry standard for API error responses — consistent structure means clients always know what to parse
+- Cross-cutting concerns (error handling, rate limiting, auth) are infrastructure — they don't change what the API does, just how it communicates
+- Exception hierarchies: a base class carries shared behavior, subclasses specialize (status codes, type URIs)
+- `application/problem+json` content type signals to clients that the response is a structured error, not regular JSON
+
+**Unprompted questions**:
+- Immediately identified this as infrastructure vs business logic — asked "this is like infra for the application itself, not related to the functionality, right?" showing clear understanding of separation of concerns
+
+| Concept | Confidence |
+|---|---|
+| RFC 7807 Problem Details format | Solid |
+| Custom exception hierarchies | Solid |
+| Global exception handlers in FastAPI | Solid |
+| Cross-cutting concerns vs business logic | Solid |
+
+**Highlights**:
+- Correctly categorized the task as infrastructure before seeing any code — demonstrates growing ability to reason about system architecture at a high level
+- Moved fast and confidently through the review, showing comfort with the pattern
