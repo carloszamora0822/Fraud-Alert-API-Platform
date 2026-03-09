@@ -377,3 +377,36 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 **Highlights**:
 - Quick and confident execution — understood the pattern immediately from prior work with `select().where()` in Task 1.5 and `Depends()` in Task 2.2
 - Building on cumulative knowledge: this task combined concepts from schemas (1.4), service layer (1.5), routers (1.6), and dependency injection (2.2) — all clicked together without needing re-explanation
+
+---
+
+## Task 2.5 — Rate Limiting
+
+**What I built**: Role-based rate limiting using slowapi — analysts get 100 req/min, admins get 1000 req/min, auth endpoints get a strict 20 req/min to prevent brute-force attacks. Custom key function identifies users by JWT email, with IP fallback for unauthenticated routes.
+
+**What I learned**:
+- Rate limiting is a server-side mechanism that caps requests per client per time window — the counter lives in server memory, never on the client
+- slowapi wraps the `limits` library and integrates with FastAPI via `app.state` and exception handlers
+- `request.state` is a Starlette "backpack" attached to each request — any code with access to the request can stash/read data from it
+- Dynamic limit functions let you return different rate limits per request based on user role
+- Auth endpoints need stricter limits because login is a brute-force vector
+- In production with multiple servers, you'd use Redis instead of `memory://` so all instances share counters
+- API gateways (Azure API Management, AWS API Gateway, Kong) handle rate limiting at the infrastructure level — app-level limits are defense in depth
+
+**Unprompted questions**:
+- "Is this what an API gateway would help with?" — connected rate limiting to broader infrastructure concepts
+- "Is it not dangerous to have that counter stored client side?" — showed security-first thinking, proactively questioning trust boundaries
+
+**Concept confidence**:
+
+| Concept | Confidence |
+|---------|------------|
+| Rate limiting purpose and mechanics | Solid |
+| request.state for cross-cutting data | Solid |
+| Role-based dynamic limits | Solid |
+| memory:// vs Redis tradeoffs | Solid |
+| API gateway vs app-level rate limiting | Solid |
+
+**Highlights**:
+- Strong security instinct — immediately questioned where counters live and whether clients could tamper with them
+- Connected the task to real-world infrastructure (API gateways) without prompting — shows growing architectural awareness
