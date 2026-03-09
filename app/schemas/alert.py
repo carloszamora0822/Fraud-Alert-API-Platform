@@ -23,6 +23,22 @@ class AlertStatus(str, Enum):
     resolved = "resolved"
 
 
+class AlertFilters(BaseModel):
+    """Query parameters for filtering the alerts list.
+
+    Every field is optional — if the client doesn't send it, we skip
+    that filter. Only the filters the user actually provides get
+    applied to the SQL query.
+    """
+
+    severity: Severity | None = None
+    status: AlertStatus | None = None
+    event_type: str | None = None
+    account_id: uuid.UUID | None = None
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+
+
 class AlertCreate(BaseModel):
     """What the client sends to create an alert.
 

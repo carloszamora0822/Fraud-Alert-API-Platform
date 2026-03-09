@@ -6,7 +6,7 @@ from sqlalchemy import select, tuple_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.alert import Alert
-from app.schemas.alert import AlertCreate, AlertStatusUpdate
+from app.schemas.alert import AlertCreate, AlertFilters, AlertStatusUpdate
 from app.schemas.pagination import PaginatedResponse
 
 # ── Pagination defaults ─────────────────────────────────────
@@ -48,7 +48,7 @@ async def get_alert(db: AsyncSession, alert_id: uuid.UUID) -> Alert | None:
 
 async def list_alerts(
     db: AsyncSession,
-    account_id: uuid.UUID | None = None,
+    filters: AlertFilters | None = None,
     cursor: str | None = None,
     limit: int = DEFAULT_PAGE_SIZE,
 ) -> PaginatedResponse:
@@ -64,9 +64,20 @@ async def list_alerts(
     # Base query — always sorted newest-first, with id as tiebreaker
     query = select(Alert).order_by(Alert.timestamp.desc(), Alert.id.desc())
 
-    # Optional filter (will be expanded in task 2.4)
-    if account_id is not None:
-        query = query.where(Alert.account_id == account_id)
+    # ── Apply filters (only the ones the user actually provided) ──
+    if filters is not None:
+        if filters.account_id is not None:
+            query = query.where(Alert.account_id == filters.account_id)
+        if filters.severity is not None:
+            query = query.where(Alert.severity == filters.severity.value)
+        if filters.status is not None:
+            query = query.where(Alert.status == filters.status.value)
+        if filters.event_type is not None:
+            query = query.where(Alert.event_type == filters.event_type)
+        if filters.start_date is not None:
+            query = query.where(Alert.timestamp >= filters.start_date)
+        if filters.end_date is not None:
+            query = query.where(Alert.timestamp <= filters.end_date)
 
     # Apply cursor: "give me everything AFTER this point"
     if cursor is not None:
