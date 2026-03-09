@@ -128,3 +128,35 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Proactively asked about separation of concerns (schemas vs services) — architectural thinking
 - Established a commit message convention `(task_id): summary` — showing ownership over project standards
 - Quick to grasp the form/receipt analogy for Create vs Response schemas
+
+---
+
+## Task 1.5 — CRUD Service Layer
+
+**What I built**: Service layer with async functions for Account CRUD (create, get, list) and Alert CRUD (create, get, list with optional filtering, status updates). This is the business logic layer that sits between API routes and the database.
+
+**What I learned**:
+- The service layer pattern — separating "what to do" (service) from "how to receive requests" (routes) and "how data is stored" (ORM)
+- How `select().where()` builds SQL queries as Python objects — composable and conditional
+- The commit/refresh dance: `db.add()` stages, `db.commit()` sends to DB, `db.refresh()` pulls back DB-generated values
+- The session is the messenger that actually talks to PostgreSQL, using the ORM as a map
+- Tracked objects: once you fetch an ORM object, the session watches it — changing an attribute and committing generates an UPDATE automatically
+
+**Questions I asked** (unprompted):
+- "Where does the actual filtering/searching come into play?" → Led to understanding `select().where()` as the filtering mechanism
+- "Explain the role of account service in relation to schema and ORM" → Built a clear mental model of the full chain: Schema validates → Service orchestrates → Session sends → ORM maps → PostgreSQL stores
+- "Would refresh not be ineffective with multiple transactions?" → Showed understanding of concurrency concerns; led to learning about transaction isolation and per-request sessions
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| Service layer pattern | Solid |
+| SQLAlchemy select/where | Solid |
+| commit/refresh pattern | Solid |
+| Schema → Service → ORM → DB flow | Solid |
+| Transaction isolation basics | Familiar |
+
+**Highlights**:
+- Independently questioned concurrency implications of `refresh()` — production-level thinking
+- Asked about the full architectural chain (schema, service, ORM, DB) and synthesized it into a clear mental model
+- Distinguished between ORM (the map) and session (the messenger) — a nuance many beginners miss

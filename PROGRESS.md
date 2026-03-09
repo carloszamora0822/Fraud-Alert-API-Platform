@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 1.5 — CRUD Service Layer
+- **Current Task**: 1.6 — API Routers
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -18,7 +18,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 | 1.2  | Pydantic config (Settings)        | `feature/1.2-pydantic-config`   | DONE        |
 | 1.3  | SQLAlchemy models + Alembic       | `feature/1.3-db-models`         | DONE        |
 | 1.4  | Pydantic schemas (request/resp)   | `feature/1.4-schemas`           | DONE        |
-| 1.5  | CRUD service layer                | `feature/1.5-crud-service`      | NOT STARTED |
+| 1.5  | CRUD service layer                | `feature/1.5-crud-service`      | DONE        |
 | 1.6  | API routers (POST/GET/PATCH)      | `feature/1.6-api-routers`       | NOT STARTED |
 | 1.7  | Data generator + seed script      | `feature/1.7-data-generator`    | NOT STARTED |
 | 1.8  | Makefile + pre-commit hooks       | `feature/1.8-dev-tooling`       | NOT STARTED |
@@ -59,4 +59,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - Completed task 1.2: Pydantic Settings config module, updated main.py to use settings
 - Completed task 1.3: async database engine, Account + Alert ORM models, Alembic migration applied
 - Completed task 1.4: Pydantic schemas (AccountCreate/Response, AlertCreate/Response/StatusUpdate, enums)
-- **Next**: Start task 1.5 — CRUD Service Layer
+- Completed task 1.5: CRUD service layer — account (create, get, list) and alert (create, get, list, update_status)
+- **Next**: Start task 1.6 — API Routers
