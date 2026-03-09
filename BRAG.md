@@ -61,3 +61,40 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Proactively asked about security implications of storing API keys before being taught
 - Pushed back on .env.example as unnecessary bloat — good engineering judgment about what to maintain
 - Built the correct mental model independently: "config acts as an interface for vulnerable variables"
+
+---
+
+## Task 1.3 — SQLAlchemy Models + Alembic
+
+**What I built**: Async database layer — engine, session factory, Base class with shared columns, Account and Alert ORM models with foreign keys and indexes, Alembic migrations that auto-generate and apply schema to PostgreSQL.
+
+**What I learned**:
+- How an ORM maps Python classes to database tables — write Python, get SQL for free
+- Async engine and sessions: the server can juggle multiple requests while waiting on database I/O
+- `yield` vs `return` in dependency injection — `yield` pauses so cleanup can happen after the route finishes
+- Context managers (`async with`) for automatic resource cleanup (sessions, connections)
+- Foreign keys enforce referential integrity — can't create an alert for a nonexistent account
+- Database indexes as lookup optimization (book index analogy)
+- Alembic reads model metadata, diffs it against the live DB, and generates migration scripts
+- Class inheritance for shared columns (Base → Account/Alert all get id, created_at, updated_at)
+
+**Questions I asked** (unprompted):
+- "What is async_session doing with yield?" → Led to understanding generator-based dependency injection
+- "What type of accounts are these?" → Clarified domain model (Azure subscription accounts being monitored)
+- "Is async close to where a load balancer would be?" → Led to understanding the difference: load balancer distributes across servers, async makes a single server efficient
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| ORM model definition | Solid |
+| Async engine / sessions | Familiar |
+| yield-based dependencies | Familiar |
+| Foreign keys + relationships | Solid |
+| Database indexes | Solid |
+| Alembic migrations | Familiar |
+| Async vs load balancing | Familiar |
+
+**Highlights**:
+- Asked about the architectural role of async — compared it to load balancing, showing systems-level thinking
+- Pushed for clarity on domain concepts (accounts) rather than blindly coding
+- Requested a full code trace walkthrough to understand the flow, not just individual files

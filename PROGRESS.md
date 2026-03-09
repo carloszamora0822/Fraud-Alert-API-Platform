@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 1.3 — SQLAlchemy Models + Alembic
+- **Current Task**: 1.4 — Pydantic Schemas
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -16,7 +16,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 |------|-----------------------------------|---------------------------------|-------------|
 | 1.1  | Project scaffold + deps           | `feature/1.1-project-scaffold`  | DONE        |
 | 1.2  | Pydantic config (Settings)        | `feature/1.2-pydantic-config`   | DONE        |
-| 1.3  | SQLAlchemy models + Alembic       | `feature/1.3-db-models`         | NOT STARTED |
+| 1.3  | SQLAlchemy models + Alembic       | `feature/1.3-db-models`         | DONE        |
 | 1.4  | Pydantic schemas (request/resp)   | `feature/1.4-schemas`           | NOT STARTED |
 | 1.5  | CRUD service layer                | `feature/1.5-crud-service`      | NOT STARTED |
 | 1.6  | API routers (POST/GET/PATCH)      | `feature/1.6-api-routers`       | NOT STARTED |
@@ -57,4 +57,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - **Next**: Start task 1.1 — Project Scaffolding
 - Completed task 1.1: scaffold, pyproject.toml, /health endpoint, test passing
 - Completed task 1.2: Pydantic Settings config module, updated main.py to use settings
-- **Next**: Start task 1.3 — SQLAlchemy Models + Alembic
+- Completed task 1.3: async database engine, Account + Alert ORM models, Alembic migration applied
+- **Next**: Start task 1.4 — Pydantic Schemas
