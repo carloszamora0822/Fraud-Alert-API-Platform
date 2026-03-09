@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.core.config import settings
-from app.routers import accounts, alerts
+from app.routers import accounts, alerts, auth
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -10,6 +10,7 @@ app = FastAPI(
     debug=settings.DEBUG,
 )
 
+app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 app.include_router(accounts.router, prefix=settings.API_V1_PREFIX)
 app.include_router(alerts.router, prefix=settings.API_V1_PREFIX)
 
