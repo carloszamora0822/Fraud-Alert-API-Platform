@@ -1,9 +1,11 @@
 from fastapi import FastAPI
+from app.core.config import settings
 
 app = FastAPI(
-    title="Fraud Alert API",
+    title=settings.APP_NAME,
     version="0.1.0",
     description="Ingest and query fraud alerts",
+    debug=settings.DEBUG,
 )
 
 
