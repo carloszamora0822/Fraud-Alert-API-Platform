@@ -98,3 +98,33 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Asked about the architectural role of async — compared it to load balancing, showing systems-level thinking
 - Pushed for clarity on domain concepts (accounts) rather than blindly coding
 - Requested a full code trace walkthrough to understand the flow, not just individual files
+
+---
+
+## Task 1.4 — Pydantic Schemas (Request/Response)
+
+**What I built**: Pydantic schemas that define the API contract — what clients send (Create schemas) and what they receive back (Response schemas). Includes enums for validated severity levels and alert statuses.
+
+**What I learned**:
+- Why schemas and models are separate: models = database shape, schemas = API shape. Different audiences, different rules.
+- `Field()` for input validation constraints (max_length, min_length) — rejects bad data before it ever touches the DB
+- Enums restrict values to a fixed set — Pydantic auto-rejects invalid entries with clear error messages
+- `ConfigDict(from_attributes=True)` bridges SQLAlchemy objects (attribute access) to Pydantic (dict-based by default)
+- Create schemas deliberately omit DB-generated fields (id, created_at) so clients can't set them
+
+**Questions I asked** (unprompted):
+- "This is separate from the service layer correct?" → Correctly identified the boundary between data shape (schemas) and business logic (services) before being taught
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| Schema vs Model separation | Solid |
+| Pydantic Field validation | Solid |
+| Enums for constrained values | Solid |
+| from_attributes config | Familiar |
+| Create vs Response patterns | Solid |
+
+**Highlights**:
+- Proactively asked about separation of concerns (schemas vs services) — architectural thinking
+- Established a commit message convention `(task_id): summary` — showing ownership over project standards
+- Quick to grasp the form/receipt analogy for Create vs Response schemas
