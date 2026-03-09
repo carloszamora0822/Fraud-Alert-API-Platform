@@ -1,10 +1,11 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import require_role
+from app.core.exceptions import NotFoundError
 from app.core.rate_limit import get_role_limit, limiter
 from app.models.user import User
 from app.schemas.account import AccountCreate, AccountResponse
@@ -48,5 +49,5 @@ async def get_account(
     """Get a single account by ID. Requires analyst role."""
     account = await account_service.get_account(db, alert_id)
     if account is None:
-        raise HTTPException(status_code=404, detail="Account not found")
+        raise NotFoundError("Account", alert_id)
     return account

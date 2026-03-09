@@ -1,12 +1,13 @@
 from collections.abc import Callable
 
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, Request
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
+from app.core.exceptions import AuthenticationError, ForbiddenError
 from app.models.user import User
 from app.services.user import get_user_by_email
 
@@ -33,12 +34,6 @@ async def get_current_user(
     3. Looks up the user in the database
     4. Returns the user object — or raises 401 if anything fails
     """
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid or expired token",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
     # Decode the JWT — this also checks if it's expired
     try:
         payload = jwt.decode(
@@ -48,14 +43,14 @@ async def get_current_user(
         )
         email: str | None = payload.get("sub")
         if email is None:
-            raise credentials_exception
+            raise AuthenticationError("Invalid or expired token")
     except JWTError:
-        raise credentials_exception
+        raise AuthenticationError("Invalid or expired token")
 
     # Look up the user — the token is valid, but does this user still exist?
     user = await get_user_by_email(db, email)
     if user is None:
-        raise credentials_exception
+        raise AuthenticationError("Invalid or expired token")
 
     # Stash the user on request.state so the rate limiter can read it.
     # This is how our get_role_limit() function knows the user's role
@@ -85,10 +80,9 @@ def require_role(minimum_role: str) -> Callable:
         required_level = ROLE_HIERARCHY.index(minimum_role)
 
         if user_level < required_level:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Role '{user.role}' does not have sufficient permissions. "
-                f"Requires '{minimum_role}' or higher.",
+            raise ForbiddenError(
+                f"Role '{user.role}' does not have sufficient permissions. "
+                f"Requires '{minimum_role}' or higher."
             )
         return user
 

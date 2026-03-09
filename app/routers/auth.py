@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.exceptions import AuthenticationError, ConflictError
 from app.core.rate_limit import limiter
 from app.core.security import create_access_token
 from app.schemas.user import Token, UserCreate, UserResponse
@@ -23,10 +24,7 @@ async def register(
     """
     existing = await user_service.get_user_by_email(db, data.email)
     if existing:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Email already registered",
-        )
+        raise ConflictError("Email already registered")
 
     user = await user_service.create_user(db, data)
     return user
@@ -42,11 +40,7 @@ async def login(request: Request, data: UserCreate, db: AsyncSession = Depends(g
     """
     user = await user_service.authenticate_user(db, data.email, data.password)
     if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise AuthenticationError("Invalid email or password")
 
     token = create_access_token({"sub": user.email, "role": user.role})
     return Token(access_token=token)

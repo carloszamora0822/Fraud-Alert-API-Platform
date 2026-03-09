@@ -1,10 +1,11 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import require_role
+from app.core.exceptions import NotFoundError
 from app.core.rate_limit import get_role_limit, limiter
 from app.models.user import User
 from app.schemas.alert import (
@@ -59,7 +60,7 @@ async def get_alert(
     """Get a single alert by ID. Requires analyst role."""
     alert = await alert_service.get_alert(db, alert_id)
     if alert is None:
-        raise HTTPException(status_code=404, detail="Alert not found")
+        raise NotFoundError("Alert", alert_id)
     return alert
 
 
@@ -75,5 +76,5 @@ async def update_alert_status(
     """Update an alert's status. Requires admin role."""
     alert = await alert_service.update_alert_status(db, alert_id, data)
     if alert is None:
-        raise HTTPException(status_code=404, detail="Alert not found")
+        raise NotFoundError("Alert", alert_id)
     return alert
