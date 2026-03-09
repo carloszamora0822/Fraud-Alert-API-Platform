@@ -292,3 +292,32 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Didn't accept "bcrypt uses a salt" at face value — asked 4 follow-up questions until the full mechanism clicked
 - Distinguished between hashing and encryption unprompted — asked "couldn't they find the password in the hash?" which shows he was testing his own assumptions
 - Asked about the security approach holistically ("which is of most security?") before diving into implementation — security-first thinking
+
+---
+
+## Task 2.2 — Role-Based Access Control (RBAC)
+
+**What I built**: A role hierarchy system (analyst < admin < superadmin) with a `require_role()` dependency factory that protects every API endpoint. GET routes require analyst, POST/PATCH require admin.
+
+**What I learned**:
+- The difference between authentication (who are you?) and authorization (what can you do?)
+- How closures work — a function that "remembers" variables from when it was created
+- Dependency factories — functions that return dependencies, allowing parameterized access control
+- HTTP 401 vs 403 — unauthorized (bad identity) vs forbidden (insufficient permissions)
+- The `_variable` convention in Python for "needed but unused" parameters
+
+**Questions I asked** (unprompted):
+- Asked for a data flow summary to understand how the pieces connect — shows preference for visual/sequential reasoning over abstract explanations
+- Admitted conceptual understanding was solid but code readability was the gap — self-aware about where to focus learning
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| Auth vs authorization (401 vs 403) | Solid |
+| Role hierarchy as list index comparison | Solid |
+| Closures / dependency factories | Conceptual (needs more practice reading the syntax) |
+| Depends() chaining in FastAPI | Conceptual |
+
+**Highlights**:
+- Honest about his learning edge — said "conceptually I get it, in practice I struggle to read the code" — this kind of self-assessment is rare and valuable for growth
+- Asked for a data flow diagram rather than just accepting the explanation — shows he's optimizing for real understanding, not just moving forward
