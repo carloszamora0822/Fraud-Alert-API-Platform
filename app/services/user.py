@@ -14,6 +14,7 @@ async def create_user(db: AsyncSession, data: UserCreate) -> User:
     user = User(
         email=data.email,
         hashed_password=hash_password(data.password),
+        role=data.role,
     )
     db.add(user)
     await db.commit()

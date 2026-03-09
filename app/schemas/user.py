@@ -6,6 +6,7 @@ class UserCreate(BaseModel):
 
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
+    role: str = Field(default="analyst", pattern="^(analyst|admin|superadmin)$")
 
 
 class UserResponse(BaseModel):
