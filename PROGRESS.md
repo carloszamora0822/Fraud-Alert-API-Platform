@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 1.1 — Project Scaffolding
+- **Current Task**: 1.2 — Pydantic Config (Settings)
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -14,7 +14,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 
 | ID   | Task                              | Branch                          | Status      |
 |------|-----------------------------------|---------------------------------|-------------|
-| 1.1  | Project scaffold + deps           | `feature/1.1-project-scaffold`  | NOT STARTED |
+| 1.1  | Project scaffold + deps           | `feature/1.1-project-scaffold`  | DONE        |
 | 1.2  | Pydantic config (Settings)        | `feature/1.2-pydantic-config`   | NOT STARTED |
 | 1.3  | SQLAlchemy models + Alembic       | `feature/1.3-db-models`         | NOT STARTED |
 | 1.4  | Pydantic schemas (request/resp)   | `feature/1.4-schemas`           | NOT STARTED |
@@ -55,3 +55,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - Created execution framework (CLAUDE.md, PROGRESS.md)
 - Initialized git repo on `main`
 - **Next**: Start task 1.1 — Project Scaffolding
+- Completed task 1.1: scaffold, pyproject.toml, /health endpoint, test passing
+- **Next**: Start task 1.2 — Pydantic Config
