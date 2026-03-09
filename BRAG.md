@@ -160,3 +160,35 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Independently questioned concurrency implications of `refresh()` — production-level thinking
 - Asked about the full architectural chain (schema, service, ORM, DB) and synthesized it into a clear mental model
 - Distinguished between ORM (the map) and session (the messenger) — a nuance many beginners miss
+
+---
+
+## Task 1.6 — API Routers
+
+**What I built**: FastAPI route handlers for accounts (POST/GET/GET-by-ID) and alerts (POST/GET/GET-by-ID/PATCH-status), wired into the app under `/api/v1`. This is the front door — the layer that receives HTTP requests and connects them to the service layer.
+
+**What I learned**:
+- Routers are thin wrappers — they receive requests, delegate to services, and return responses. Almost no logic lives here.
+- `Depends(get_db)` is dependency injection: FastAPI calls `get_db()` automatically and hands the session to the route. Only routers use `Depends` — services just receive `db` as a normal argument.
+- `HTTPException(status_code=404)` is how you return error responses — FastAPI converts it to a proper JSON error.
+- `include_router()` with prefix stacking: router defines `/accounts`, `include_router` adds `/api/v1`, final path is `/api/v1/accounts`.
+- `Query(default=None)` makes a parameter optional in the URL query string (e.g., `/alerts?account_id=...`).
+
+**Questions I asked** (unprompted):
+- "There's so many layers — what happens when I create a user?" → Traced the full request lifecycle: Client → Router → Schema validates → Service → ORM → DB → Response. Built a complete mental model of the entire stack.
+- "Why do we call db in so many spots?" → Led to understanding that `db` is passed like a baton — created once in the router via `Depends`, then handed down. Services are "dumb" about where it came from.
+- "We only ever use get_db in the router layer then?" → Correctly identified that `Depends` is router-only; downstream layers just receive `db` as a plain argument.
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| Router as thin wiring layer | Solid |
+| Dependency injection (Depends) | Solid |
+| HTTPException for errors | Solid |
+| Prefix stacking (include_router) | Solid |
+| Full request lifecycle (Client → Router → Schema → Service → ORM → DB) | Solid |
+
+**Highlights**:
+- Asked to trace a full request end-to-end — wanted to understand how all 5 layers connect, not just the current one
+- Independently realized that `get_db` is only used at the router level — grasped the architectural boundary between DI and plain arguments
+- Questioned why `db` appears in so many places — didn't accept repetition without understanding the reason
