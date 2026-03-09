@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, ForeignKey, Index, String, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Index, String, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -37,6 +37,11 @@ class Alert(Base):
     status: Mapped[str] = mapped_column(
         String(20), default="new"
     )  # new, reviewed, escalated, resolved
+
+    # ── Sync tracking ──────────────────────────────────────
+    # Tracks whether this alert has been copied to ADX yet.
+    # The sync service queries WHERE synced_to_adx = False to find new alerts.
+    synced_to_adx: Mapped[bool] = mapped_column(Boolean, default=False)
 
     # ── Foreign key to accounts ───────────────────────────
     account_id: Mapped[uuid.UUID] = mapped_column(
