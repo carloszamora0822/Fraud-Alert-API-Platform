@@ -192,3 +192,36 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Asked to trace a full request end-to-end — wanted to understand how all 5 layers connect, not just the current one
 - Independently realized that `get_db` is only used at the router level — grasped the architectural boundary between DI and plain arguments
 - Questioned why `db` appears in so many places — didn't accept repetition without understanding the reason
+
+---
+
+## Task 1.7 — Data Generator + Seed Script
+
+**What I built**: Faker-based data generator (`scripts/generate.py`) producing 20 accounts and 10K+ realistic fraud alerts across 6 fraud types + legitimate traffic, plus a seed script (`scripts/seed.py`) that inserts everything into PostgreSQL by reusing the existing CRUD service layer.
+
+**What I learned**:
+- The difference between fraud *detection* (upstream systems like Azure Sentinel) and fraud *analytics* (our platform) — we store and serve already-classified alerts, we don't build the detection algorithms
+- 6 fraud types in depth: impossible_travel, brute_force, privilege_escalation, data_exfiltration, suspicious_login, resource_abuse — what each means, why CFAR cares, and real-world implications
+- Modern frontier fraud: deepfake identity fraud, synthetic identities, prompt injection attacks, account farming, real-time payment fraud
+- Batch seeding (instant, fake timestamps) vs real-time ingestion (continuous stream) — seed data is for development, real systems receive alerts 24/7
+- The service layer is reusable — the seed script calls the same `create_account`/`create_alert` functions as the API routes, proving the abstraction works
+- Public vs private functions: prefix with `_` to signal "implementation detail, don't call this directly"
+
+**Questions I asked** (unprompted):
+- "Do I have to create the policies/business logic for the 6 fraud types?" → Showed he was thinking about system boundaries — where does detection end and our platform begin?
+- "Would alerts come in real-time or automatically populate?" → Led to understanding batch vs streaming data ingestion patterns
+- Asked about modern fraud types beyond the 6 — curious about the industry frontier, not just the project scope
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| Detection vs analytics platform distinction | Solid |
+| Fraud type taxonomy (6 types) | Solid |
+| Service layer reusability | Solid |
+| Batch seeding vs real-time ingestion | Solid |
+| Weighted random distributions | Familiar |
+
+**Highlights**:
+- Questioned the system boundary between detection and analytics — architectural thinking about what's in scope vs out of scope
+- Proactively asked about industry-frontier fraud types — intellectual curiosity beyond the assignment
+- Understood the data flow diagram (Generator → Service → ORM → DB) and how it mirrors the API flow (Router → Service → ORM → DB) — grasped that both converge at the service layer
