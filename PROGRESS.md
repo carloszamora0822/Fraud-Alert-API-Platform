@@ -2,9 +2,9 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 2.8 — Postman Collection
+- **Current Task**: 3.1 — ADX Cluster Setup
 - **Branch**: (not started)
-- **State**: READY TO START
+- **State**: READY TO START — Sprint 2 COMPLETE
 
 ## Task Breakdown
 
@@ -34,7 +34,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 | 2.5  | Rate limiting (slowapi)           | `feature/2.5-rate-limiting`     | DONE        |
 | 2.6  | Error handling (RFC 7807)         | `feature/2.6-error-handling`    | DONE        |
 | 2.7  | Test suite (40+ tests)            | `feature/2.7-test-suite`        | DONE        |
-| 2.8  | Postman collection                | `feature/2.8-postman`           | NOT STARTED |
+| 2.8  | Postman collection                | `feature/2.8-postman`           | DONE        |
 
 ### Sprint 3: Analytics & DevOps
 
@@ -77,4 +77,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - Completed task 2.6: RFC 7807 error handling — custom exception classes, global handlers, consistent problem+json responses across all endpoints
 - **Next**: Start task 2.7 — Test Suite
 - Completed task 2.7: 43-test suite — conftest with savepoint rollback, tests for auth, accounts, alerts, error handling, RBAC, health. Fixed alert_id→account_id bug in accounts router.
-- **Next**: Start task 2.8 — Postman Collection
+- Completed task 2.8: Postman collection — 10 requests across 4 folders, auto-token capture, chained variables, all filters pre-filled
+- **Sprint 2 COMPLETE** — Next: Start Sprint 3, task 3.1 — ADX Cluster Setup
