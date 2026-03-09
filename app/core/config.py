@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 30
 
+    # ── Rate Limiting ─────────────────────────────────────
+    RATE_LIMIT_ANALYST: str = "100/minute"
+    RATE_LIMIT_ADMIN: str = "1000/minute"
+
     # ── Azure Data Explorer (Sprint 3) ───────────────────
     ADX_CLUSTER_URL: str = ""
     ADX_DATABASE: str = ""

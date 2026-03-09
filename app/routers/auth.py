@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.rate_limit import limiter
 from app.core.security import create_access_token
 from app.schemas.user import Token, UserCreate, UserResponse
 from app.services import user as user_service
@@ -9,13 +10,17 @@ from app.services import user as user_service
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
+# Auth endpoints use a fixed, stricter limit (no JWT to read role from).
+# 20/minute is tight because login attempts are a brute-force vector.
 @router.post("/register", response_model=UserResponse, status_code=201)
-async def register(data: UserCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("20/minute")
+async def register(
+    request: Request, data: UserCreate, db: AsyncSession = Depends(get_db)
+):
     """
     Create a new user account.
     Hashes the password and stores the user. Returns user info (no password).
     """
-    # Check if email is already taken
     existing = await user_service.get_user_by_email(db, data.email)
     if existing:
         raise HTTPException(
@@ -28,7 +33,8 @@ async def register(data: UserCreate, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-async def login(data: UserCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("20/minute")
+async def login(request: Request, data: UserCreate, db: AsyncSession = Depends(get_db)):
     """
     Authenticate and return a JWT.
     Takes email + password, verifies against the database,
@@ -42,6 +48,5 @@ async def login(data: UserCreate, db: AsyncSession = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Build the JWT with the user's email and role as claims
     token = create_access_token({"sub": user.email, "role": user.role})
     return Token(access_token=token)

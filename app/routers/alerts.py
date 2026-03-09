@@ -1,10 +1,11 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import require_role
+from app.core.rate_limit import get_role_limit, limiter
 from app.models.user import User
 from app.schemas.alert import (
     AlertCreate,
@@ -19,7 +20,9 @@ router = APIRouter(prefix="/alerts", tags=["alerts"])
 
 
 @router.post("/", response_model=AlertResponse, status_code=201)
+@limiter.limit(get_role_limit)
 async def create_alert(
+    request: Request,
     data: AlertCreate,
     db: AsyncSession = Depends(get_db),
     _user: User = Depends(require_role("admin")),
@@ -30,7 +33,9 @@ async def create_alert(
 
 
 @router.get("/", response_model=PaginatedResponse[AlertResponse])
+@limiter.limit(get_role_limit)
 async def list_alerts(
+    request: Request,
     filters: AlertFilters = Depends(),
     cursor: str | None = Query(default=None),
     limit: int = Query(default=50, ge=1, le=100),
@@ -44,7 +49,9 @@ async def list_alerts(
 
 
 @router.get("/{alert_id}", response_model=AlertResponse)
+@limiter.limit(get_role_limit)
 async def get_alert(
+    request: Request,
     alert_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     _user: User = Depends(require_role("analyst")),
@@ -57,7 +64,9 @@ async def get_alert(
 
 
 @router.patch("/{alert_id}/status", response_model=AlertResponse)
+@limiter.limit(get_role_limit)
 async def update_alert_status(
+    request: Request,
     alert_id: uuid.UUID,
     data: AlertStatusUpdate,
     db: AsyncSession = Depends(get_db),
