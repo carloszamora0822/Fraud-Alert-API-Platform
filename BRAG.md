@@ -225,3 +225,34 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 - Questioned the system boundary between detection and analytics — architectural thinking about what's in scope vs out of scope
 - Proactively asked about industry-frontier fraud types — intellectual curiosity beyond the assignment
 - Understood the data flow diagram (Generator → Service → ORM → DB) and how it mirrors the API flow (Router → Service → ORM → DB) — grasped that both converge at the service layer
+
+---
+
+## Task 1.8 — Makefile + Pre-commit Hooks
+
+**What I built**: Developer tooling — a Makefile with 9 shortcut targets (dev, test, format, lint, typecheck, check, migrate, seed, install) and pre-commit hooks that auto-run black + ruff on every git commit. Also fixed all mypy type errors across the codebase.
+
+**What I learned**:
+- Makefiles aren't just for compiling — they're command menus. Any project can use them as shortcut runners for common tasks.
+- Pre-commit hooks are git's built-in automation: scripts that run before each commit. The `pre-commit` framework manages them via a YAML config file.
+- The three layers of quality enforcement: Makefile (manual), pre-commit (automatic on commit), CI/CD pipeline (automatic on push) — and how CI often calls Makefile targets for a single source of truth.
+- `TYPE_CHECKING` pattern: import types only during static analysis to avoid circular imports at runtime — needed when two models reference each other.
+- `from __future__ import annotations` makes all type hints strings by default, deferring evaluation.
+
+**Questions I asked** (unprompted):
+- "How is a Makefile different from the YAML file?" → Distinguished between a command runner (Makefile) and a config file (YAML). Corrected the misconception that Makefiles are only for compiling.
+- "Would a deployment pipeline YAML use the Makefile commands?" → Connected the dots between local tooling and CI/CD — understood the single-source-of-truth pattern before being taught it.
+
+**Concept Mastery**:
+| Concept | Confidence |
+|---|---|
+| Makefile as command runner | Solid |
+| Pre-commit hooks | Solid |
+| Local vs CI quality enforcement | Solid |
+| TYPE_CHECKING for circular imports | Familiar |
+| Three-layer quality enforcement | Solid |
+
+**Highlights**:
+- Proactively asked how Makefiles connect to CI/CD pipelines — systems thinking about how tools compose across environments
+- Correctly intuited that pipeline YAML would call Makefile targets — understood DRY principle applied to DevOps
+- Sprint 1 complete: 8 tasks, full API from scaffold to dev tooling
