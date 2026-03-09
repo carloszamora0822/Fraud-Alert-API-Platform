@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 2.4 — Query Filtering
+- **Current Task**: 2.5 — Rate Limiting
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -30,7 +30,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 | 2.1  | JWT auth (token creation)         | `feature/2.1-jwt-auth`          | DONE        |
 | 2.2  | Role-based access control         | `feature/2.2-rbac`              | DONE        |
 | 2.3  | Cursor-based pagination           | `feature/2.3-pagination`        | DONE        |
-| 2.4  | Query filtering                   | `feature/2.4-filtering`         | NOT STARTED |
+| 2.4  | Query filtering                   | `feature/2.4-filtering`         | DONE        |
 | 2.5  | Rate limiting (slowapi)           | `feature/2.5-rate-limiting`     | NOT STARTED |
 | 2.6  | Error handling (RFC 7807)         | `feature/2.6-error-handling`    | NOT STARTED |
 | 2.7  | Test suite (40+ tests)            | `feature/2.7-test-suite`        | NOT STARTED |
@@ -70,4 +70,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - **Next**: Start task 2.2 — Role-Based Access Control
 - Completed task 2.2: RBAC — role hierarchy, require_role dependency factory, protected all routes (analyst=read, admin=write)
 - Completed task 2.3: Cursor-based pagination — PaginatedResponse schema, encode/decode cursor helpers, limit+1 trick, tuple_ tiebreaker
-- **Next**: Start task 2.4 — Query Filtering
+- Completed task 2.4: Query filtering — AlertFilters schema, dynamic WHERE clauses, Depends() injection
+- **Next**: Start task 2.5 — Rate Limiting

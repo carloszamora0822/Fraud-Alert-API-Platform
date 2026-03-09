@@ -352,3 +352,28 @@ Building a production-grade Fraud Alert API from scratch to learn backend engine
 **Highlights**:
 - Demonstrated strong product thinking — didn't just ask "how do I build it" but "how would a client actually use this and why is it better?" That's the kind of user-empathy that separates good engineers from great ones
 - Connected the concept to real-world UIs he's used (log viewers, infinite scroll) before being prompted — shows he's building mental models, not just memorizing patterns
+
+---
+
+## Task 2.4 — Query Filtering
+
+**What I built**: Dynamic query filtering for the alerts list endpoint — an `AlertFilters` Pydantic schema with 6 optional fields (severity, status, event_type, account_id, start_date, end_date), conditional WHERE clause building in the service layer, and `Depends()` injection in the router.
+
+**What I learned**:
+- Dynamic query building: start with a base SQL query and conditionally chain `.where()` clauses only for filters the user provides
+- Using `Depends()` with a Pydantic model to automatically parse query parameters into a structured object — FastAPI turns each model field into a query param
+- Server-side filtering vs client-side filtering: letting the database do the work is orders of magnitude faster than fetching everything and filtering in Python
+- Enum-based validation: reusing `Severity` and `AlertStatus` enums means invalid filter values get rejected automatically with a 422
+
+**Concept confidence**:
+
+| Concept | Confidence |
+|---------|------------|
+| Dynamic WHERE clause building | Solid |
+| Depends() with Pydantic models | Solid |
+| Server-side vs client-side filtering | Solid |
+| Date range queries (>=, <=) | Solid |
+
+**Highlights**:
+- Quick and confident execution — understood the pattern immediately from prior work with `select().where()` in Task 1.5 and `Depends()` in Task 2.2
+- Building on cumulative knowledge: this task combined concepts from schemas (1.4), service layer (1.5), routers (1.6), and dependency injection (2.2) — all clicked together without needing re-explanation
