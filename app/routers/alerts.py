@@ -7,6 +7,7 @@ from app.core.database import get_db
 from app.core.dependencies import require_role
 from app.models.user import User
 from app.schemas.alert import AlertCreate, AlertResponse, AlertStatusUpdate
+from app.schemas.pagination import PaginatedResponse
 from app.services import alert as alert_service
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
@@ -23,14 +24,18 @@ async def create_alert(
     return alert
 
 
-@router.get("/", response_model=list[AlertResponse])
+@router.get("/", response_model=PaginatedResponse[AlertResponse])
 async def list_alerts(
     account_id: uuid.UUID | None = Query(default=None),
+    cursor: str | None = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
     _user: User = Depends(require_role("analyst")),
 ):
-    """List alerts, optionally filtered by account_id. Requires analyst role."""
-    return await alert_service.list_alerts(db, account_id=account_id)
+    """List alerts with cursor-based pagination. Requires analyst role."""
+    return await alert_service.list_alerts(
+        db, account_id=account_id, cursor=cursor, limit=limit
+    )
 
 
 @router.get("/{alert_id}", response_model=AlertResponse)
