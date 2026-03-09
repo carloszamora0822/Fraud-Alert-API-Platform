@@ -2,7 +2,7 @@
 
 ## Current Status
 - **Phase**: Sprint 1
-- **Current Task**: 1.7 — Data Generator + Seed Script
+- **Current Task**: 1.8 — Makefile + Pre-commit Hooks
 - **Branch**: (not started)
 - **State**: READY TO START
 
@@ -20,7 +20,7 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 | 1.4  | Pydantic schemas (request/resp)   | `feature/1.4-schemas`           | DONE        |
 | 1.5  | CRUD service layer                | `feature/1.5-crud-service`      | DONE        |
 | 1.6  | API routers (POST/GET/PATCH)      | `feature/1.6-api-routers`       | DONE        |
-| 1.7  | Data generator + seed script      | `feature/1.7-data-generator`    | NOT STARTED |
+| 1.7  | Data generator + seed script      | `feature/1.7-data-generator`    | DONE        |
 | 1.8  | Makefile + pre-commit hooks       | `feature/1.8-dev-tooling`       | NOT STARTED |
 
 ### Sprint 2: Production Hardening
@@ -61,4 +61,5 @@ Tasks are ordered for incremental learning. Each builds on the previous.
 - Completed task 1.4: Pydantic schemas (AccountCreate/Response, AlertCreate/Response/StatusUpdate, enums)
 - Completed task 1.5: CRUD service layer — account (create, get, list) and alert (create, get, list, update_status)
 - Completed task 1.6: API routers for accounts (3 endpoints) and alerts (4 endpoints) under /api/v1
-- **Next**: Start task 1.7 — Data Generator + Seed Script
+- Completed task 1.7: Faker-based data generator (scripts/generate.py) + seed script (scripts/seed.py) — 20 accounts, 10K alerts, 6 fraud types + legitimate traffic
+- **Next**: Start task 1.8 — Makefile + Pre-commit Hooks
